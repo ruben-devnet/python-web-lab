@@ -1,5 +1,5 @@
-
 from http.server import HTTPServer, BaseHTTPRequestHandler
+import os
 
 class MiServidor(BaseHTTPRequestHandler):
 
@@ -25,6 +25,10 @@ class MiServidor(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    servidor = HTTPServer(("127.0.0.1", 8080), MiServidor)
-    print("Servidor iniciado en http://127.0.0.1:8080")
+    puerto = int(os.environ.get("PORT", 8080))
+
+    servidor = HTTPServer(("0.0.0.0", puerto), MiServidor)
+
+    print(f"Servidor iniciado en el puerto {puerto}", flush=True)
+
     servidor.serve_forever()
