@@ -6,13 +6,35 @@ import os
 import re
 import sqlite3
 
-from flask import Flask, jsonify, request, send_from_directory
+from datetime import timedelta
+from hmac import compare_digest
+from flask import Flask, jsonify, request, send_from_directory, session, redirect, url_for
+
+from werkzeug.security import check_password_hash
 
 BASE = Path(__file__).resolve().parent
 CFG = json.loads((BASE / "config/settings.json").read_text(encoding="utf-8"))
 DB = BASE / "data/ordenes.db"
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 200_000
+
+app.config["SECRET_KEY"] = os.environ.get("LAB_SECRET_KEY")
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=15)
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SECURE"] = os.environ.get("LAB_COOKIE_SECURE") == "1"
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+
+LAB_USER = os.environ.get("LAB_USER")
+LAB_PASSWORD_HASH = os.environ.get("LAB_PASSWORD_HASH")
+
+def validar_credenciales(usuario, password):
+    if not LAB_USER or not LAB_PASSWORD_HASH:
+        return False
+
+    if not compare_digest(usuario, LAB_USER):
+        return False
+
+    return check_password_hash(LAB_PASSWORD_HASH, password)
 
 
 def init_db():
@@ -25,6 +47,46 @@ def init_db():
 
 
 init_db()
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        usuario = request.form.get("usuario", "")
+        password = request.form.get("password", "")
+
+        if validar_credenciales(usuario, password):
+            session.clear()
+            session.permanent = True
+            session["autenticado"] = True
+            return redirect(url_for("home"))
+
+        return "Usuario o contraseña incorrectos", 401
+
+    return """
+    <h2>Generador de Órdenes - Laboratorio</h2>
+    <form method="POST">
+        <p><input name="usuario" placeholder="Usuario" required></p>
+        <p><input type="password" name="password"
+                  placeholder="Contraseña" required></p>
+        <button type="submit">Ingresar</button>
+    </form>
+    """
+@app.post("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
+
+
+@app.before_request
+def verificar_acceso():
+    if request.endpoint == "login":
+        return None
+
+    if not session.get("autenticado"):
+        if request.path.startswith("/api/"):
+            return jsonify({"error": "No autorizado"}), 401
+
+        return redirect(url_for("login"))
 
 
 @app.after_request
