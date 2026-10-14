@@ -1,0 +1,57 @@
+{
+  "host": "127.0.0.1",
+  "port": 8085,
+  "contratista": "EMPRESA DEMOSTRACIÓN S.A.C.",
+  "tipo": "ASIGNACIÓN",
+  "modelos": [
+    "Equipo de prueba A",
+    "Equipo de prueba B"
+  ],
+  "firmantes": {
+    "gerente_nombre": "PERSONA DEMO UNO",
+    "gerente_cargo": "RESPONSABLE DE PROYECTO",
+    "patrimonio_nombre": "PERSONA DEMO DOS",
+    "patrimonio_cargo": "CONTROL DE BIENES",
+    "entrega_nombre": "",
+    "entrega_cargo": "",
+    "recepcion_nombre": "PERSONA DEMO TRES",
+    "recepcion_cargo": "RECEPCIÓN DE BIENES"
+  },
+  "ad": {
+    "habilitado": false,
+    "nota": "Integración excluida de este laboratorio público"
+  },
+  "version": "0.5.6-lab-flask",
+  "catalogo_bienes": [
+    {
+      "id": "equipo_demo",
+      "nombre": "EQUIPO DE PRUEBA",
+      "modelos": [
+        "Equipo de prueba A",
+        "Equipo de prueba B"
+      ]
+    }
+  ],
+  "movimientos": {
+    "ASIGNACIÓN": {
+      "requiere_responsable_anterior": false,
+      "requiere_ubicaciones": true,
+      "parrafo": "Este documento de laboratorio registra un movimiento ficticio de tipo asignación. No tiene validez administrativa."
+    },
+    "REPLIEGUE": {
+      "requiere_responsable_anterior": false,
+      "requiere_ubicaciones": true,
+      "parrafo": "Este documento de laboratorio registra un movimiento ficticio de tipo repliegue. No tiene validez administrativa."
+    },
+    "TRASLADO": {
+      "requiere_responsable_anterior": false,
+      "requiere_ubicaciones": true,
+      "parrafo": "Este documento de laboratorio registra un movimiento ficticio de tipo traslado. No tiene validez administrativa."
+    },
+    "REASIGNACIÓN": {
+      "requiere_responsable_anterior": true,
+      "requiere_ubicaciones": true,
+      "parrafo": "Este documento de laboratorio registra un movimiento ficticio de tipo reasignación. No tiene validez administrativa."
+    }
+  }
+}

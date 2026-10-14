@@ -1,0 +1,18 @@
+GENERADOR DE ÓRDENES v0.5.6 — LABORATORIO FLASK
+
+Copia adaptada para aprendizaje, NO para producción. No contiene firma, logotipo, configuración de personal real ni integración Active Directory.
+
+La interfaz y los cuatro tipos configurados se conservan. Se adaptaron las rutas HTTP a Flask. Se conserva el esquema SQLite y la transacción BEGIN IMMEDIATE para reservar correlativos. El PDF se produce mediante la función de impresión del navegador, como en la versión local.
+
+ARCHIVOS: flask_app.py, web/index.html, config/settings.json, requirements.txt.
+
+PRUEBA LOCAL:
+  python -m pip install -r requirements.txt
+  python flask_app.py
+  abrir http://127.0.0.1:8085
+
+PYTHONANYWHERE: instalar Flask si hace falta y apuntar WSGI a `from flask_app import app as application` con project_home igual a la carpeta de este proyecto. NO reemplazar la app publicada hasta validar localmente.
+
+ATENCIÓN: esta demostración NO tiene autenticación, autorización, protección CSRF, límites de consumo por usuario ni políticas de privacidad. Los endpoints /api/ordenes permiten guardar y consultar datos sin login. NO publicar con datos reales. Para uso público incluso de laboratorio, usar únicamente información ficticia; preferir una instancia privada para pruebas de guardado.
+
+No se ha validado la fidelidad de impresión en todos los navegadores ni los cinco movimientos mencionados en documentación histórica: el código v0.5.6 recibido contiene cuatro movimientos configurados.
