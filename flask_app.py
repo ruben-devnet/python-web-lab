@@ -15,6 +15,7 @@ def inicio():
             <h1>Mi primera aplicación web con Python</h1>
             <p>Servidor Python funcionando correctamente.</p>
             <p>Laboratorio de despliegue web.</p>
+            <p>Versión 2 - Actualizado desde GitHub.</p>
         </body>
     </html>
     """
